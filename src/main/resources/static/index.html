@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontend for hello endpoint</title>
+  </head>
+  <body>
+    <h1>enter your first name and last name</h1>
+    <label for="fname">first name:</label>
+    <input type="text" id="fname" />
+    <label for="lname">last name:</label>
+    <input type="text" id="lname" />
+    <button onclick="myfun()">submit</button>
+    <h1 id="h1"></h1>
+    <script>
+      function myfun() {
+        let a = document.getElementById("fname").value;
+        let b = document.getElementById("lname").value;
+        fetch(`http://localhost:8080/hello?fname=${a}&lname=${b}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("HTTP error " + response.status);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            document.getElementById("h1").innerHTML = data.message;
+          })
+          .catch((error) => {
+            console.error("Fetch error:", error);
+            document.getElementById("h1").innerHTML = "Error occurred";
+          });
+      }
+    </script>
+  </body>
+</html>
